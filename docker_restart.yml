@@ -1,0 +1,27 @@
+---
+- name: Automate Docker
+  hosts: all
+  become: yes
+  tasks:
+    - name: Display all Docker containers
+      command: docker ps -a
+      register: result_before
+
+    - name: Stop ihcore container
+      command: docker stop ihcore
+
+
+    - name: Start ihcore container
+      command: docker start ihcore
+
+    - name: Display all Docker containers after restart
+      command: docker ps -a
+      register: result_after
+
+    - name: Display initial Docker ps -a output
+      debug:
+        var: result_before.stdout
+
+    - name: Display final Docker ps -a output
+      debug:
+        var: result_after.stdout
